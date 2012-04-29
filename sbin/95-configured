@@ -1,0 +1,35 @@
+# This script runs last, after all network configuration
+# has completed. It sets a property to let the framework
+# know that setting up the interface is complete.
+
+# For debugging:
+
+IWCONFIG=/system/xbin/iwconfig
+
+setprop dhcp.${interface}.reason "${reason}"
+
+case "${reason}" in
+BOUND|INFORM|REBIND|REBOOT|RENEW|TIMEOUT|IPV4LL)
+    setprop dhcp.${interface}.ipaddress "${new_ip_address}"
+    setprop dhcp.${interface}.gateway   "${new_routers%% *}"
+    setprop dhcp.${interface}.mask      "${new_subnet_mask}"
+    setprop dhcp.${interface}.leasetime "${new_dhcp_lease_time}"
+    setprop dhcp.${interface}.server    "${new_dhcp_server_identifier}"
+
+    setprop dhcp.${interface}.result "ok"
+	$IWCONFIG wlan0 txpower 16dBm
+	$IWCONFIG wlan0 frag 2304
+	$IWCONFIG wlan0 rts 2305
+    ;;
+
+EXPIRE|FAIL|STOP)
+    setprop dhcp.${interface}.result "failed"
+    ;;
+
+RELEASE)
+    setprop dhcp.${interface}.result "released"
+	$IWCONFIG wlan0 txpower 16dBm
+	$IWCONFIG wlan0 frag 2304
+	$IWCONFIG wlan0 rts 2305
+    ;;
+esac
