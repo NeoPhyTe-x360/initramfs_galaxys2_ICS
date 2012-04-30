@@ -389,11 +389,11 @@ on boot
     write /proc/sys/vm/oom_kill_allocating_task 1
     write /proc/sys/vm/dirty_writeback_centisecs 1800
     write /proc/sys/vm/dirty_expire_centisecs 700
-    write /proc/sys/vm/dirty_ratio 10
-    write /proc/sys/vm/dirty_background_ratio 5
+    write /proc/sys/vm/dirty_ratio 20
+    write /proc/sys/vm/dirty_background_ratio 10
     write /proc/sys/vm/drop_caches 3
     write /proc/sys/vm/laptop_mode 3
-    write /proc/sys/vm/vfs_cache_pressure 120
+    write /proc/sys/vm/vfs_cache_pressure 85
     write /proc/sys/vm/min_free_kbytes 4096
     setprop dalvik.vm.jniopts warnonly
     setprop dalvik.vm.checkjni false
